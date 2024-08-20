@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth } from '@angular/fire/auth'; // Import from Firebase
+import { Auth, onAuthStateChanged } from '@angular/fire/auth'; // Import from Firebase
 import { User } from 'app/core/user/user.types';
 import { Observable, ReplaySubject } from 'rxjs';
 
@@ -9,7 +9,9 @@ export class UserService {
         1
     );
 
-    constructor(private _auth: Auth) {}
+    constructor(private _auth: Auth) {
+        this.initializeUser();
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -21,7 +23,6 @@ export class UserService {
      * @param value
      */
     set user(value: User | null) {
-        // Store the value
         this._user.next(value);
     }
 
@@ -34,20 +35,20 @@ export class UserService {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Get the current signed-in user data
+     * Initialize the user state
      */
-    get(): void {
-        const user = this._auth.currentUser;
-        if (user) {
-            this._user.next({
-                id: user.uid,
-                email: user.email,
-                name: user.displayName,
-                // Add any additional fields you need
-            });
-        } else {
-            this._user.next(null);
-        }
+    private initializeUser(): void {
+        onAuthStateChanged(this._auth, (user) => {
+            if (user) {
+                this._user.next({
+                    id: user.uid,
+                    email: user.email,
+                    name: user.displayName,
+                });
+            } else {
+                this._user.next(null);
+            }
+        });
     }
 
     /**

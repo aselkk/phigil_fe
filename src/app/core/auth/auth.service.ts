@@ -15,6 +15,7 @@ export class AuthService {
     private _httpClient = inject(HttpClient);
     private _userService = inject(UserService);
     private _auth = inject(Auth);
+
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
     // -----------------------------------------------------------------------------------------------------
@@ -91,8 +92,10 @@ export class AuthService {
     signOut(): Observable<any> {
         this._authenticated = false;
         this._auth.signOut();
+        this._userService.user = null;
         return of(true);
     }
+
     /**
      * Sign up
      * @param user

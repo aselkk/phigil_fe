@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { UserService } from './core/user/user.service';
 
 @Component({
     selector: 'app-root',
@@ -12,5 +13,6 @@ export class AppComponent {
     /**
      * Constructor
      */
-    constructor() {}
+    constructor(private _userService: UserService) {}
+    ngOnInit(): void {}
 }
