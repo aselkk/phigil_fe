@@ -17,12 +17,14 @@ import { Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import { FirebaseErrorService } from 'app/core/erorrs/errors.service';
 
 @Component({
     selector: 'auth-sign-up',
     templateUrl: './sign-up.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
+
     standalone: true,
     imports: [
         RouterLink,
@@ -53,7 +55,8 @@ export class AuthSignUpComponent implements OnInit {
     constructor(
         private _authService: AuthService,
         private _formBuilder: UntypedFormBuilder,
-        private _router: Router
+        private _router: Router,
+        private _firebaseErrorService: FirebaseErrorService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -97,19 +100,23 @@ export class AuthSignUpComponent implements OnInit {
         this._authService.signUp(this.signUpForm.value).subscribe(
             (response) => {
                 // Navigate to the confirmation required page
-                this._router.navigateByUrl('/confirmation-required');
+                this._router.navigateByUrl('/sign-in');
             },
             (response) => {
+                console.log(response);
+
                 // Re-enable the form
                 this.signUpForm.enable();
 
                 // Reset the form
                 this.signUpNgForm.resetForm();
-
+                const errorMessage = this._firebaseErrorService.getErrorMessage(
+                    response.code
+                );
                 // Set the alert
                 this.alert = {
                     type: 'error',
-                    message: 'Something went wrong, please try again.',
+                    message: errorMessage,
                 };
 
                 // Show the alert

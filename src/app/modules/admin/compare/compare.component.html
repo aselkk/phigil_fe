@@ -1,0 +1,128 @@
+<div class="flex min-w-0 flex-auto flex-col">
+    <fuse-loading-bar setAutoMode="true"></fuse-loading-bar>
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10">
+        <!-- CONTENT GOES HERE -->
+        <div class="h-full rounded-2xl border-2 border-dashed border-gray-300">
+            <div
+                class="flex h-full min-w-0 flex-col items-center justify-center"
+            >
+                <div class="prose prose-sm w-full max-w-md">
+                    <form
+                        [formGroup]="uploadForm"
+                        (ngSubmit)="onSubmit()"
+                        class="bg-card mx-auto mt-8 flex w-full flex-col overflow-hidden rounded-2xl p-8 pb-4 shadow sm:max-w-sm"
+                    >
+                        <div class="flex flex-col space-y-4">
+                            <div formArrayName="usernames">
+                                <div
+                                    *ngFor="
+                                        let usernameCtrl of usernames.controls;
+                                        let i = index
+                                    "
+                                    class="flex flex-col"
+                                >
+                                    <div class="flex items-center">
+                                        <mat-form-field class="flex-auto">
+                                            <mat-label
+                                                >Name {{ i + 1 }}</mat-label
+                                            >
+                                            <input
+                                                matInput
+                                                [formControl]="usernameCtrl"
+                                            />
+                                        </mat-form-field>
+                                        <button
+                                            *ngIf="i > 0"
+                                            mat-icon-button
+                                            color="warn"
+                                            (click)="removeUsername(i)"
+                                        >
+                                            <mat-icon
+                                                [svgIcon]="
+                                                    'heroicons_outline:trash'
+                                                "
+                                            ></mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                mat-stroked-button
+                                (click)="addUsername()"
+                                class="ml-auto flex items-center"
+                                style="width: 150px"
+                            >
+                                <mat-icon
+                                    [svgIcon]="'heroicons_outline:plus'"
+                                    style="font-size: 16px"
+                                ></mat-icon>
+                                <span class="ml-1" style="font-size: 14px"
+                                    >Add Username</span
+                                >
+                            </button>
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Team</mat-label>
+                                <input matInput formControlName="team" />
+                            </mat-form-field>
+                        </div>
+                        <input
+                            type="file"
+                            id="files"
+                            (change)="onFileSelected($event)"
+                            style="display: none"
+                        />
+                        <button
+                            type="button"
+                            mat-flat-button
+                            [color]="'accent'"
+                            (click)="triggerFileInput()"
+                            class="mb-3 flex items-center"
+                        >
+                            <mat-icon
+                                [svgIcon]="'heroicons_outline:plus'"
+                            ></mat-icon>
+                            <span class="ml-2 mr-1">
+                                {{
+                                    selectedFile
+                                        ? 'Change photo'
+                                        : 'Upload photo'
+                                }}
+                            </span>
+                        </button>
+                        <img
+                            *ngIf="filePreview"
+                            [src]="filePreview"
+                            alt="Selected Image"
+                            class="mt-4 w-60 rounded-md border"
+                        />
+                        <button
+                            mat-raised-button
+                            [color]="'primary'"
+                            type="submit"
+                            [disabled]="!uploadForm.valid || !selectedFile"
+                        >
+                            Submit
+                        </button>
+                        @if (showAlert) {
+                            <fuse-alert
+                                class="m-8"
+                                [appearance]="'fill'"
+                                [showIcon]="false"
+                                [type]="alert.type"
+                            >
+                                {{ alert.message }}
+                            </fuse-alert>
+                        }
+                    </form>
+                </div>
+                <app-compare-result
+                    [imageUrl]="imageUrl"
+                    [boxes]="boxes"
+                    [names]="names"
+                ></app-compare-result>
+            </div>
+        </div>
+    </div>
+</div>
