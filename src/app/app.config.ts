@@ -13,13 +13,27 @@ import { provideFuse } from '@fuse';
 import { TranslocoService, provideTransloco } from '@ngneat/transloco';
 import { appRoutes } from 'app/app.routes';
 // import { provideAuth } from 'app/core/auth/auth.provider';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideIcons } from 'app/core/icons/icons.provider';
 import { mockApiServices } from 'app/mock-api';
 import { firstValueFrom } from 'rxjs';
 import { TranslocoHttpLoader } from './core/transloco/transloco.http-loader';
 
+const firebaseConfig = {
+    apiKey: 'AIzaSyBwwo5IqwAZ-0qIIG6GxSsuO9-VdyQr2l4',
+    authDomain: 'phigil-432608.firebaseapp.com',
+    projectId: 'phigil-432608',
+    storageBucket: 'phigil-432608.appspot.com',
+    messagingSenderId: '312117082420',
+    appId: '1:312117082420:web:6528068b34a9432f97cd61',
+    measurementId: 'G-XWKDXS6HZX',
+};
+
 export const appConfig: ApplicationConfig = {
     providers: [
+        provideFirebaseApp(() => initializeApp(firebaseConfig)),
+        provideAuth(() => getAuth()),
         provideAnimations(),
         provideHttpClient(),
         provideRouter(

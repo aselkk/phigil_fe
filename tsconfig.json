@@ -10,7 +10,7 @@
         "experimentalDecorators": true,
         "moduleResolution": "bundler",
         "importHelpers": true,
-        "target": "ES2022",
+        "target": "ES6",
         "module": "ES2022",
         "useDefineForClassFields": false,
         "lib": ["ES2022", "dom"]
