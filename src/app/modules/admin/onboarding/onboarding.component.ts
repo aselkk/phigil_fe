@@ -2,6 +2,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
+import { Storage } from '@angular/fire/storage';
 import {
     FormBuilder,
     FormGroup,
@@ -23,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { FuseLoadingBarComponent } from '@fuse/components/loading-bar';
+import { ErrorHandlingService } from 'app/core/erorrs/error-handler';
 import { OnboardingService } from 'app/core/onboarding/onboarding.service';
 import { FuseAlertComponent } from '../../../../@fuse/components/alert/alert.component';
 
@@ -64,17 +66,18 @@ export class OnboardingComponent implements OnInit {
     filePreview: string | ArrayBuffer | null = null;
     uploadedImages: any[] = [];
     token =
-        'ya29.a0AcM612z_sgsjNF1EKbiFQpbFTxckn8yfcBA3YlkAZ1AvAUTsnWq8DkOk25JG0ZPHIEnC2un0tXkGvSl85ZuLllRZfxuDIyOvKKc8ulb8KJmiQb__eOIVoL355J06_PjOETvx7mIQaWUM24pgGFprJSIPfyu4y719_iwuucu49QaCgYKAUoSARESFQHGX2MikJ0WLQsPSSWJAcju0tDjDQ0177';
+        'ya29.a0AcM612xauOUH7BFSo_FD5sWbQ3Nr5TpqED93W-nnOqhXStVwHxjwO8kWFh7_2RJ99eOt01ayWRUCy-gDZFdiQtA64-PTIPu-K5LrSJJ1HG4zFBQATDl0PH7iBJOt8RZg8KUDDHOCrVioI0pHwd6WeAQfOrPwRZfC7vQXgMO12AaCgYKAWgSARESFQHGX2Mihxmwtv5TPJY86WWA3BQ0Ww0177';
 
     constructor(
         private formBuilder: FormBuilder,
         private _formBuilder: UntypedFormBuilder,
         private onboardingService: OnboardingService,
-        private firestore: Firestore
+        private errorHandlingService: ErrorHandlingService,
+        private firestore: Firestore,
+        private storage: Storage
     ) {}
 
     ngOnInit(): void {
-        // Create the form
         this.uploadForm = this._formBuilder.group({
             username: ['', Validators.required],
             team: ['', Validators.required],
@@ -114,11 +117,9 @@ export class OnboardingComponent implements OnInit {
 
         const formData = { ...this.uploadForm.value, token: this.token };
 
-        // Create the team in Firestore
         this.onboardingService
             .createTeam(this.uploadForm.value.team)
             .then(() => {
-                // Add the team member to Firestore and upload the file to the GCP bucket
                 this.onboardingService
                     .addTeamMember(
                         this.uploadForm.value.team,
@@ -128,18 +129,29 @@ export class OnboardingComponent implements OnInit {
                     )
                     .subscribe({
                         next: (response) => {
-                            this.uploadedImages.push({
-                                url: URL.createObjectURL(this.selectedFile!),
-                                meta: { ...formData },
-                            });
-                            this.alert = {
-                                type: 'success',
-                                message: 'File uploaded successfully!',
-                            };
-                            this.showAlert = true;
-                            this.resetFormState();
+                            const { code, description, downloadURL } = response;
+                            if (code === 0) {
+                                this.uploadedImages.push({
+                                    url: downloadURL,
+                                    meta: { ...formData },
+                                });
+                                this.alert = {
+                                    type: 'success',
+                                    message: 'File uploaded successfully!',
+                                };
+                                this.showAlert = true;
+                                this.resetFormState();
+                            } else {
+                                const { type, message } =
+                                    this.errorHandlingService.handleOnboardingError(
+                                        code
+                                    );
+                                this.alert = { type, message };
+                                this.uploadForm.enable();
+                                this.showAlert = true;
+                            }
                         },
-                        error: (err) => {
+                        error: () => {
                             this.alert = {
                                 type: 'error',
                                 message:
@@ -150,7 +162,7 @@ export class OnboardingComponent implements OnInit {
                         },
                     });
             })
-            .catch((error) => {
+            .catch(() => {
                 this.alert = {
                     type: 'error',
                     message:

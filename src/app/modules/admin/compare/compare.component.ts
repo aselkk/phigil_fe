@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FileCompareService } from 'app/core/compare/compare.service';
+import { ErrorHandlingService } from 'app/core/erorrs/error-handler';
 import { FuseAlertComponent } from '../../../../@fuse/components/alert/alert.component';
 import { FuseLoadingBarComponent } from '../../../../@fuse/components/loading-bar/loading-bar.component';
 import { CompareResultComponent } from './compare-result/compare-result.component';
@@ -40,9 +41,8 @@ export class CompareComponent {
     imageUrl: string = '';
     selectedFile: File | null = null;
     filePreview: string | ArrayBuffer | null = null;
-    uploadedImages: any[] = [];
     token =
-        'ya29.a0AcM612z_sgsjNF1EKbiFQpbFTxckn8yfcBA3YlkAZ1AvAUTsnWq8DkOk25JG0ZPHIEnC2un0tXkGvSl85ZuLllRZfxuDIyOvKKc8ulb8KJmiQb__eOIVoL355J06_PjOETvx7mIQaWUM24pgGFprJSIPfyu4y719_iwuucu49QaCgYKAUoSARESFQHGX2MikJ0WLQsPSSWJAcju0tDjDQ0177';
+        'ya29.a0AcM612xauOUH7BFSo_FD5sWbQ3Nr5TpqED93W-nnOqhXStVwHxjwO8kWFh7_2RJ99eOt01ayWRUCy-gDZFdiQtA64-PTIPu-K5LrSJJ1HG4zFBQATDl0PH7iBJOt8RZg8KUDDHOCrVioI0pHwd6WeAQfOrPwRZfC7vQXgMO12AaCgYKAWgSARESFQHGX2Mihxmwtv5TPJY86WWA3BQ0Ww0177';
 
     uploadForm: FormGroup;
     alert = { type: '', message: '' };
@@ -50,7 +50,8 @@ export class CompareComponent {
     constructor(
         private formBuilder: FormBuilder,
         private fileCompareService: FileCompareService,
-        private firestore: Firestore // Inject Firestore
+        private firestore: Firestore,
+        private errorHandlingService: ErrorHandlingService
     ) {
         this.uploadForm = this.formBuilder.group({
             team: ['', Validators.required],
@@ -79,10 +80,8 @@ export class CompareComponent {
         if (this.uploadForm.valid && this.selectedFile) {
             const teamName = this.uploadForm.value.team;
 
-            // Fetch team members from Firestore
             const members = await this.fetchTeamMembers(teamName);
 
-            // Include team members in the compare request
             const formData = {
                 usernames: members,
                 team: teamName,
@@ -93,16 +92,24 @@ export class CompareComponent {
                 .uploadFile(this.selectedFile, formData)
                 .subscribe(
                     (response) => {
-                        this.uploadedImages.push({
-                            url: URL.createObjectURL(this.selectedFile!),
-                            meta: { ...formData },
-                        });
-                        this.boxes = response.boxes;
-                        this.names = response.names;
-                        this.imageUrl = URL.createObjectURL(this.selectedFile!);
-                        this.uploadForm.reset();
-                        this.selectedFile = null;
-                        this.filePreview = null;
+                        if (response.code === 0) {
+                            this.boxes = response.boxes;
+                            this.names = response.names;
+                            this.imageUrl = URL.createObjectURL(
+                                this.selectedFile!
+                            );
+                            this.uploadForm.reset();
+                            this.selectedFile = null;
+                            this.filePreview = null;
+                        } else {
+                            const error =
+                                this.errorHandlingService.handleCompareError(
+                                    response.code
+                                );
+                            this.alert = error;
+                            this.showAlert = true;
+                            this.hideAlertAfterDelay();
+                        }
                     },
                     (error) => {
                         this.alert = {
@@ -136,7 +143,7 @@ export class CompareComponent {
             const q = query(membersCollection);
             const querySnapshot = await getDocs(q);
 
-            return querySnapshot.docs.map((doc) => doc.id); // Assuming the document ID is the member's name
+            return querySnapshot.docs.map((doc) => doc.id);
         } catch (error) {
             console.error('Error fetching team members: ', error);
             return [];
