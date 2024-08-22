@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Firestore, collection, getDocs, query } from '@angular/fire/firestore';
 import {
-    FormArray,
     FormBuilder,
-    FormControl,
     FormGroup,
     ReactiveFormsModule,
     Validators,
@@ -43,38 +42,20 @@ export class CompareComponent {
     filePreview: string | ArrayBuffer | null = null;
     uploadedImages: any[] = [];
     token =
-        'ya29.a0AcM612zlt9ASxMs3EwQa3015LWgzDg0iy32wRUoJq0va6YEw2o4AYS51K02gRjC1Zc_zlzaqZN4lqnYtJpos1GqBSetRYOJe4kZqt738L1k7pw6rwpOrOsphQjYE-lm8bvrye-VJEJvoZ4ljHNaZss0BNe70bZU6KR5cy_-vaCgYKAZoSARISFQHGX2Mi5r-yAJ_ffTKM5FaLA-ceBg0175';
+        'ya29.a0AcM612z_sgsjNF1EKbiFQpbFTxckn8yfcBA3YlkAZ1AvAUTsnWq8DkOk25JG0ZPHIEnC2un0tXkGvSl85ZuLllRZfxuDIyOvKKc8ulb8KJmiQb__eOIVoL355J06_PjOETvx7mIQaWUM24pgGFprJSIPfyu4y719_iwuucu49QaCgYKAUoSARESFQHGX2MikJ0WLQsPSSWJAcju0tDjDQ0177';
 
     uploadForm: FormGroup;
     alert = { type: '', message: '' };
 
     constructor(
         private formBuilder: FormBuilder,
-        private fileCompareService: FileCompareService
+        private fileCompareService: FileCompareService,
+        private firestore: Firestore // Inject Firestore
     ) {
         this.uploadForm = this.formBuilder.group({
-            usernames: this.formBuilder.array([this.createUsernameControl()]),
             team: ['', Validators.required],
             token: [this.token],
         });
-    }
-
-    get usernames() {
-        return this.uploadForm.get('usernames') as FormArray;
-    }
-
-    createUsernameControl(): FormControl {
-        return this.formBuilder.control('', Validators.required);
-    }
-
-    addUsername(): void {
-        this.usernames.push(this.createUsernameControl());
-    }
-
-    removeUsername(index: number): void {
-        if (this.usernames.length > 1) {
-            this.usernames.removeAt(index);
-        }
     }
 
     onFileSelected(event: Event): void {
@@ -94,11 +75,17 @@ export class CompareComponent {
         fileInput.click();
     }
 
-    onSubmit(): void {
+    async onSubmit(): Promise<void> {
         if (this.uploadForm.valid && this.selectedFile) {
+            const teamName = this.uploadForm.value.team;
+
+            // Fetch team members from Firestore
+            const members = await this.fetchTeamMembers(teamName);
+
+            // Include team members in the compare request
             const formData = {
-                usernames: this.uploadForm.value.usernames,
-                team: this.uploadForm.value.team,
+                usernames: members,
+                team: teamName,
                 token: this.token,
             };
 
@@ -135,6 +122,24 @@ export class CompareComponent {
             };
             this.showAlert = true;
             this.hideAlertAfterDelay();
+        }
+    }
+
+    async fetchTeamMembers(teamName: string): Promise<string[]> {
+        try {
+            const membersCollection = collection(
+                this.firestore,
+                'teams',
+                teamName,
+                'members'
+            );
+            const q = query(membersCollection);
+            const querySnapshot = await getDocs(q);
+
+            return querySnapshot.docs.map((doc) => doc.id); // Assuming the document ID is the member's name
+        } catch (error) {
+            console.error('Error fetching team members: ', error);
+            return [];
         }
     }
 

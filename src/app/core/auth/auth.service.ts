@@ -3,7 +3,10 @@ import { inject, Injectable } from '@angular/core';
 import {
     Auth,
     createUserWithEmailAndPassword,
+    GoogleAuthProvider,
+    sendPasswordResetEmail,
     signInWithEmailAndPassword,
+    signInWithPopup,
     updateProfile,
 } from '@angular/fire/auth';
 import { UserService } from 'app/core/user/user.service';
@@ -16,32 +19,13 @@ export class AuthService {
     private _userService = inject(UserService);
     private _auth = inject(Auth);
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Accessors
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Setter & getter for access token
-     */
-    set accessToken(token: string) {
-        localStorage.setItem('accessToken', token);
-    }
-
-    get accessToken(): string {
-        return localStorage.getItem('accessToken') ?? '';
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
     /**
      * Forgot password
      *
      * @param email
      */
     forgotPassword(email: string): Observable<any> {
-        return this._httpClient.post('api/auth/forgot-password', email);
+        return from(sendPasswordResetEmail(this._auth, email));
     }
 
     /**
@@ -49,9 +33,6 @@ export class AuthService {
      *
      * @param password
      */
-    resetPassword(password: string): Observable<any> {
-        return this._httpClient.post('api/auth/reset-password', password);
-    }
 
     /**
      * Sign in
@@ -74,6 +55,29 @@ export class AuthService {
                 this._authenticated = true;
 
                 const user = userCredential.user;
+
+                this._userService.user = {
+                    id: user.uid,
+                    email: user.email,
+                    name: user.displayName,
+                };
+
+                return of(this._userService.user);
+            }),
+            map((user) => {
+                return user;
+            })
+        );
+    }
+
+    signInWithGoogle(): Observable<any> {
+        const provider = new GoogleAuthProvider();
+
+        return from(signInWithPopup(this._auth, provider)).pipe(
+            switchMap((result) => {
+                this._authenticated = true;
+
+                const user = result.user;
 
                 this._userService.user = {
                     id: user.uid,

@@ -128,4 +128,27 @@ export class AuthSignInComponent implements OnInit {
             }
         );
     }
+
+    signInWithGoogle(): void {
+        this.showAlert = false;
+
+        this._authService.signInWithGoogle().subscribe(
+            () => {
+                const redirectURL =
+                    this._activatedRoute.snapshot.queryParamMap.get(
+                        'redirectURL'
+                    ) || '/signed-in-redirect';
+
+                this._router.navigateByUrl(redirectURL);
+            },
+            (response) => {
+                this.signInForm.enable();
+                this.alert = {
+                    type: 'error',
+                    message: 'Google sign-in failed. Please try again.',
+                };
+                this.showAlert = true;
+            }
+        );
+    }
 }

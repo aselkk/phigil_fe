@@ -15,6 +15,7 @@ import { appRoutes } from 'app/app.routes';
 // import { provideAuth } from 'app/core/auth/auth.provider';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideIcons } from 'app/core/icons/icons.provider';
 import { mockApiServices } from 'app/mock-api';
 import { firstValueFrom } from 'rxjs';
@@ -34,6 +35,7 @@ export const appConfig: ApplicationConfig = {
     providers: [
         provideFirebaseApp(() => initializeApp(firebaseConfig)),
         provideAuth(() => getAuth()),
+        provideFirestore(() => getFirestore()),
         provideAnimations(),
         provideHttpClient(),
         provideRouter(

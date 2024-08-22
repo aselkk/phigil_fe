@@ -70,17 +70,8 @@
                             alt="Selected Image"
                             class="mt-4 w-24 rounded-md border"
                         />
-
-                        <!-- <button
-                            mat-raised-button
-                            [color]="'primary'"
-                            type="submit"
-                            [disabled]="!uploadForm.valid || !selectedFile"
-                        >
-                            Submit
-                        </button> -->
                         <button
-                            class="fuse-mat-button-large mt-6 w-full"
+                            class="fuse-mat-button-large mt-4 w-full"
                             mat-flat-button
                             [color]="'primary'"
                             [disabled]="uploadForm.disabled"
@@ -88,10 +79,10 @@
                             [disabled]="!uploadForm.valid || !selectedFile"
                         >
                             @if (!uploadForm.disabled) {
-                                <span> Submitr </span>
+                                <span> Submit</span>
                             }
                             @if (uploadForm.disabled) {
-                                <span> Submit r</span>
+                                <span> Submit</span>
                             }
                         </button>
                     </form>

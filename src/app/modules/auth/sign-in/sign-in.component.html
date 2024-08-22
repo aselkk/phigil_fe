@@ -94,13 +94,6 @@
                 <div
                     class="mt-1.5 inline-flex w-full items-center justify-between"
                 >
-                    <mat-checkbox
-                        class="-ml-2"
-                        [color]="'primary'"
-                        [formControlName]="'rememberMe'"
-                    >
-                        Remember me
-                    </mat-checkbox>
                     <a
                         class="text-md font-medium text-primary-500 hover:underline"
                         [routerLink]="['/forgot-password']"
@@ -136,23 +129,17 @@
 
                 <!-- Single sign-on buttons -->
                 <div class="mt-8 flex items-center space-x-4">
-                    <button class="flex-auto" type="button" mat-stroked-button>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:facebook'"
-                        ></mat-icon>
-                    </button>
-                    <button class="flex-auto" type="button" mat-stroked-button>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:twitter'"
-                        ></mat-icon>
-                    </button>
-                    <button class="flex-auto" type="button" mat-stroked-button>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:github'"
-                        ></mat-icon>
+                    <button
+                        (click)="signInWithGoogle()"
+                        class="flex-auto"
+                        type="button"
+                        mat-stroked-button
+                    >
+                        <img
+                            src="/icons/google.svg"
+                            alt="Google icon"
+                            width="13"
+                        />
                     </button>
                 </div>
             </form>

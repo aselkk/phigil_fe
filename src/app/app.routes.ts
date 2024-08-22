@@ -114,17 +114,27 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
-                path: 'example',
-                loadChildren: () =>
-                    import('app/modules/admin/example/example.routes'),
-            },
-            {
                 path: 'onboarding',
                 loadChildren: () =>
                     import('app/modules/admin/onboarding/onboarding.routes'),
             },
             {
                 path: 'compare',
+                loadChildren: () =>
+                    import('app/modules/admin/compare/compare.routes'),
+            },
+            {
+                path: 'teams',
+                loadChildren: () =>
+                    import('app/modules/admin/teams/teams.routes'),
+            },
+            {
+                path: 'team',
+                loadChildren: () =>
+                    import('app/modules/admin/compare/compare.routes'),
+            },
+            {
+                path: 'member',
                 loadChildren: () =>
                     import('app/modules/admin/compare/compare.routes'),
             },

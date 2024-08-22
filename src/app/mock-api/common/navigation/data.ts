@@ -25,11 +25,18 @@ export const compactNavigation: FuseNavigationItem[] = [
         icon: 'heroicons_outline:viewfinder-circle',
         link: '/compare',
     },
+    {
+        id: 'teams',
+        title: 'Teams',
+        type: 'basic',
+        icon: 'heroicons_outline:user-group',
+        link: '/teams',
+    },
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
     {
-        id: 'example',
-        title: 'Example',
+        id: 'teams',
+        title: 'Teams',
         type: 'basic',
         icon: 'heroicons_outline:chart-pie',
         link: '/example',

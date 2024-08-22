@@ -17,7 +17,6 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { FuseValidators } from '@fuse/validators';
 import { AuthService } from 'app/core/auth/auth.service';
-import { finalize } from 'rxjs';
 
 @Component({
     selector: 'auth-reset-password',
@@ -90,43 +89,5 @@ export class AuthResetPasswordComponent implements OnInit {
         if (this.resetPasswordForm.invalid) {
             return;
         }
-
-        // Disable the form
-        this.resetPasswordForm.disable();
-
-        // Hide the alert
-        this.showAlert = false;
-
-        // Send the request to the server
-        this._authService
-            .resetPassword(this.resetPasswordForm.get('password').value)
-            .pipe(
-                finalize(() => {
-                    // Re-enable the form
-                    this.resetPasswordForm.enable();
-
-                    // Reset the form
-                    this.resetPasswordNgForm.resetForm();
-
-                    // Show the alert
-                    this.showAlert = true;
-                })
-            )
-            .subscribe(
-                (response) => {
-                    // Set the alert
-                    this.alert = {
-                        type: 'success',
-                        message: 'Your password has been reset.',
-                    };
-                },
-                (response) => {
-                    // Set the alert
-                    this.alert = {
-                        type: 'error',
-                        message: 'Something went wrong, please try again.',
-                    };
-                }
-            );
     }
 }
