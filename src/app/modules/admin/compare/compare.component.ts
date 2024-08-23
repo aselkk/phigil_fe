@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Firestore, collection, getDocs, query } from '@angular/fire/firestore';
 import {
     FormBuilder,
     FormGroup,
@@ -8,6 +7,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -36,13 +36,14 @@ import { CompareResultComponent } from './compare-result/compare-result.componen
 })
 export class CompareComponent {
     showAlert: boolean = false;
+
     boxes: number[][] = [];
     names: string[] = [];
     imageUrl: string = '';
     selectedFile: File | null = null;
     filePreview: string | ArrayBuffer | null = null;
     token =
-        'ya29.a0AcM612xauOUH7BFSo_FD5sWbQ3Nr5TpqED93W-nnOqhXStVwHxjwO8kWFh7_2RJ99eOt01ayWRUCy-gDZFdiQtA64-PTIPu-K5LrSJJ1HG4zFBQATDl0PH7iBJOt8RZg8KUDDHOCrVioI0pHwd6WeAQfOrPwRZfC7vQXgMO12AaCgYKAWgSARESFQHGX2Mihxmwtv5TPJY86WWA3BQ0Ww0177';
+        'ya29.a0AcM612wNW3F2ulREuRvJGtd90GsLPRjmujr1YPE4NREypTG6TVAoHt0l9n2f_LpPGkXYczSIemz1kwahBl897WIIMyJYJeQiCRuBEiKNvu5fNU0IiuUw3Ck5RVosUQatslxMDf2x7UIk5m2wZoSThdTomV-5OmXtHacGCE0yaCgYKATISARISFQHGX2MiLnsV2KVND27s9_kd5k0GmA0175';
 
     uploadForm: FormGroup;
     alert = { type: '', message: '' };
@@ -50,13 +51,18 @@ export class CompareComponent {
     constructor(
         private formBuilder: FormBuilder,
         private fileCompareService: FileCompareService,
-        private firestore: Firestore,
-        private errorHandlingService: ErrorHandlingService
+        private errorHandlingService: ErrorHandlingService,
+        private dialog: MatDialog
     ) {
         this.uploadForm = this.formBuilder.group({
             team: ['', Validators.required],
             token: [this.token],
         });
+    }
+
+    triggerFileInput(): void {
+        const fileInput = document.getElementById('files') as HTMLInputElement;
+        fileInput.click();
     }
 
     onFileSelected(event: Event): void {
@@ -71,20 +77,10 @@ export class CompareComponent {
         }
     }
 
-    triggerFileInput(): void {
-        const fileInput = document.getElementById('files') as HTMLInputElement;
-        fileInput.click();
-    }
-
     async onSubmit(): Promise<void> {
         if (this.uploadForm.valid && this.selectedFile) {
-            const teamName = this.uploadForm.value.team;
-
-            const members = await this.fetchTeamMembers(teamName);
-
             const formData = {
-                usernames: members,
-                team: teamName,
+                team: this.uploadForm.value.team,
                 token: this.token,
             };
 
@@ -98,9 +94,13 @@ export class CompareComponent {
                             this.imageUrl = URL.createObjectURL(
                                 this.selectedFile!
                             );
+
                             this.uploadForm.reset();
                             this.selectedFile = null;
                             this.filePreview = null;
+                            this.resetFileInput();
+
+                            this.openCompareResultModal();
                         } else {
                             const error =
                                 this.errorHandlingService.handleCompareError(
@@ -132,22 +132,22 @@ export class CompareComponent {
         }
     }
 
-    async fetchTeamMembers(teamName: string): Promise<string[]> {
-        try {
-            const membersCollection = collection(
-                this.firestore,
-                'teams',
-                teamName,
-                'members'
-            );
-            const q = query(membersCollection);
-            const querySnapshot = await getDocs(q);
+    resetFileInput(): void {
+        const fileInput = document.getElementById('files') as HTMLInputElement;
+        fileInput.value = '';
+    }
 
-            return querySnapshot.docs.map((doc) => doc.id);
-        } catch (error) {
-            console.error('Error fetching team members: ', error);
-            return [];
-        }
+    openCompareResultModal(): void {
+        this.dialog.open(CompareResultComponent, {
+            width: '60%',
+            maxWidth: '600px',
+            maxHeight: '100vh',
+            data: {
+                imageUrl: this.imageUrl,
+                boxes: this.boxes,
+                names: this.names,
+            },
+        });
     }
 
     hideAlertAfterDelay(): void {

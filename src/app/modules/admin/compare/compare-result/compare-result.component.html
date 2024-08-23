@@ -1,3 +1,20 @@
-<div>
-    <canvas #canvas></canvas>
+<h2
+    class="mb-4 flex items-center justify-between text-2xl font-semibold text-gray-800"
+>
+    Results:
+    <button mat-icon-button matDialogClose>
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+
+<canvas #canvas></canvas>
+
+<div class="mt-4">
+    <h3>Recognized:</h3>
+    <div #recognizedFaces class="flex flex-wrap gap-2"></div>
+</div>
+
+<div class="mt-4">
+    <h3>Unrecognized:</h3>
+    <div #unrecognizedFaces class="flex flex-wrap gap-2"></div>
 </div>

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class FileCompareService {
     private apiUrl =
-        'https://compare-lwdrsd6qmq-uc.a.run.app/predictions/compare';
+        'https://compare-bglcjkpr6a-uc.a.run.app/predictions/compare';
 
     constructor(private http: HttpClient) {}
 

@@ -64,9 +64,8 @@ export class OnboardingComponent implements OnInit {
     showAlert: boolean = false;
     selectedFile: File | null = null;
     filePreview: string | ArrayBuffer | null = null;
-    uploadedImages: any[] = [];
     token =
-        'ya29.a0AcM612xauOUH7BFSo_FD5sWbQ3Nr5TpqED93W-nnOqhXStVwHxjwO8kWFh7_2RJ99eOt01ayWRUCy-gDZFdiQtA64-PTIPu-K5LrSJJ1HG4zFBQATDl0PH7iBJOt8RZg8KUDDHOCrVioI0pHwd6WeAQfOrPwRZfC7vQXgMO12AaCgYKAWgSARESFQHGX2Mihxmwtv5TPJY86WWA3BQ0Ww0177';
+        'ya29.a0AcM612wNW3F2ulREuRvJGtd90GsLPRjmujr1YPE4NREypTG6TVAoHt0l9n2f_LpPGkXYczSIemz1kwahBl897WIIMyJYJeQiCRuBEiKNvu5fNU0IiuUw3Ck5RVosUQatslxMDf2x7UIk5m2wZoSThdTomV-5OmXtHacGCE0yaCgYKATISARISFQHGX2MiLnsV2KVND27s9_kd5k0GmA0175';
 
     constructor(
         private formBuilder: FormBuilder,
@@ -118,58 +117,52 @@ export class OnboardingComponent implements OnInit {
         const formData = { ...this.uploadForm.value, token: this.token };
 
         this.onboardingService
-            .createTeam(this.uploadForm.value.team)
-            .then(() => {
-                this.onboardingService
-                    .addTeamMember(
-                        this.uploadForm.value.team,
-                        this.uploadForm.value.username,
-                        formData,
-                        this.selectedFile!
-                    )
-                    .subscribe({
-                        next: (response) => {
-                            const { code, description, downloadURL } = response;
-                            if (code === 0) {
-                                this.uploadedImages.push({
-                                    url: downloadURL,
-                                    meta: { ...formData },
-                                });
+            .addTeamMember(
+                this.uploadForm.value.team,
+                this.uploadForm.value.username,
+                formData,
+                this.selectedFile!
+            )
+            .subscribe({
+                next: (response) => {
+                    if (response.code === 0) {
+                        this.onboardingService
+                            .createTeam(this.uploadForm.value.team)
+                            .then(() => {
                                 this.alert = {
                                     type: 'success',
                                     message: 'File uploaded successfully!',
                                 };
                                 this.showAlert = true;
                                 this.resetFormState();
-                            } else {
-                                const { type, message } =
-                                    this.errorHandlingService.handleOnboardingError(
-                                        code
-                                    );
-                                this.alert = { type, message };
+                            })
+                            .catch(() => {
+                                this.alert = {
+                                    type: 'error',
+                                    message:
+                                        'Team creation failed. Please try again.',
+                                };
                                 this.uploadForm.enable();
                                 this.showAlert = true;
-                            }
-                        },
-                        error: () => {
-                            this.alert = {
-                                type: 'error',
-                                message:
-                                    'File upload failed. Please try again.',
-                            };
-                            this.showAlert = true;
-                            this.resetFormState();
-                        },
-                    });
-            })
-            .catch(() => {
-                this.alert = {
-                    type: 'error',
-                    message:
-                        'Error creating team in Firestore. Please try again.',
-                };
-                this.showAlert = true;
-                this.uploadForm.enable();
+                            });
+                    } else {
+                        const { type, message } =
+                            this.errorHandlingService.handleOnboardingError(
+                                response.code
+                            );
+                        this.alert = { type, message };
+                        this.uploadForm.enable();
+                        this.showAlert = true;
+                    }
+                },
+                error: () => {
+                    this.alert = {
+                        type: 'error',
+                        message: 'File upload failed. Please try again.',
+                    };
+                    this.showAlert = true;
+                    this.resetFormState();
+                },
             });
     }
 

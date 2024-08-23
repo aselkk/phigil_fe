@@ -14,7 +14,7 @@ import { Observable, catchError, from, map, of, switchMap } from 'rxjs';
 })
 export class OnboardingService {
     private apiUrl =
-        'https://onboard-lwdrsd6qmq-uc.a.run.app/predictions/onboard';
+        'https://onboard-bglcjkpr6a-uc.a.run.app/predictions/onboard';
 
     constructor(
         private http: HttpClient,

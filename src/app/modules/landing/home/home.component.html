@@ -1,33 +1,90 @@
-<div class="flex h-full w-full flex-col items-center justify-center">
-    <div class="w-full max-w-3xl">
-        <div class="prose prose-sm mx-auto max-w-none">
-            <img class="w-20" src="images/logo/logo.svg" alt="Logo image" />
-            <h1>Phigil</h1>
-            <p>
-                This can be the landing or the welcome page of your application.
-                If you have an SSR (Server Side Rendering) setup, or if you
-                don't need to have Search engine visibility and optimizations,
-                you can even use this page as your primary landing page.
+<div
+    class="flex h-full w-full flex-col items-center justify-center bg-gray-50 p-6"
+>
+    <div class="w-full max-w-6xl rounded-lg bg-white p-6 shadow-lg">
+        <div class="mb-8 text-center">
+            <img
+                class="mx-auto mb-4 w-24"
+                src="images/logo/logo.svg"
+                alt="Logo image"
+            />
+            <h1 class="text-4xl font-bold text-gray-800">Phigil</h1>
+        </div>
+
+        <div class="mb-8 text-center">
+            <h2 class="text-3xl font-semibold text-gray-700">
+                Welcome to Phigil Detection System
+            </h2>
+            <p class="mt-4 text-lg text-gray-600">
+                In today’s digital landscape, security is paramount. Our
+                Imposter Detection System offers cutting-edge protection by
+                leveraging advanced computer vision technology to ensure that
+                only authorized users gain access.
             </p>
-            <p>
-                This is a separate "module", it has its own directory and
-                routing setup and also it's completely separated from the actual
-                application. This is also a simple example of a multiple
-                applications setup that uses the same codebase. You can have
-                different entry points and essentially have different
-                applications within the same codebase.
+            <p class="mt-2 text-lg text-gray-600">
+                Here’s how our system works and why it’s the ideal choice for
+                your security needs:
             </p>
         </div>
-        <div>
+
+        <div class="mb-8 text-left">
+            <h3 class="mb-4 text-2xl font-semibold text-gray-700">
+                What is Imposter Detection?
+            </h3>
+            <p class="mb-6 text-base text-gray-600">
+                Imposter Detection is a sophisticated security solution designed
+                to prevent unauthorized access by identifying and blocking
+                individuals who do not meet the predefined criteria for
+                legitimate users. Our system utilizes state-of-the-art computer
+                vision techniques to verify user identity with unparalleled
+                accuracy.
+            </p>
+
+            <h3 class="mb-4 text-2xl font-semibold text-gray-700">
+                How It Works
+            </h3>
+            <ul class="list-inside list-disc space-y-2 text-base text-gray-600">
+                <li>
+                    <strong>Advanced Computer Vision Algorithms:</strong> Our
+                    system employs the latest computer vision technology to
+                    analyze and interpret visual data. This includes recognizing
+                    facial features, detecting anomalies, and assessing
+                    biometric data in real-time.
+                </li>
+                <li>
+                    <strong>Real-Time Authentication:</strong> The moment a user
+                    attempts to access the system, our algorithms instantly scan
+                    and verify their identity. This process ensures immediate
+                    and accurate authentication, minimizing the risk of
+                    unauthorized access.
+                </li>
+                <li>
+                    <strong>Robust Security Measures:</strong> By integrating
+                    various layers of computer vision, our system not only
+                    identifies facial features but also assesses expressions,
+                    gestures, and other unique identifiers. This multi-faceted
+                    approach makes it significantly harder for imposters to
+                    bypass security.
+                </li>
+                <li>
+                    <strong>Adaptability:</strong> Our system is designed to
+                    adapt to various environments and conditions. Whether in low
+                    light, varying angles, or diverse user backgrounds, it
+                    maintains high accuracy and reliability.
+                </li>
+            </ul>
+        </div>
+
+        <div class="mt-8 text-center">
             <a
-                class="mt-8"
+                class="hover:bg-primary-dark inline-flex items-center rounded-lg bg-primary px-6 py-3 font-semibold text-white shadow-lg transition"
                 mat-flat-button
                 [color]="'primary'"
                 [routerLink]="'/onboarding'"
             >
                 <span>Launch the App</span>
                 <mat-icon
-                    class="ml-2 icon-size-5"
+                    class="ml-2"
                     [svgIcon]="'heroicons_mini:arrow-long-right'"
                 ></mat-icon>
             </a>
