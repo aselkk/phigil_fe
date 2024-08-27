@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { FuseLoadingBarComponent } from '@fuse/components/loading-bar';
+import { ErrorHandlingService } from 'app/core/erorrs/error-handler';
 import { OnboardingService } from 'app/core/onboarding/onboarding.service';
 import { UserService } from 'app/core/user/user.service';
 import { FuseAlertComponent } from '../../../../@fuse/components/alert/alert.component';
@@ -53,7 +54,8 @@ export class OnboardingComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private onboardingService: OnboardingService,
-        private userService: UserService
+        private userService: UserService,
+        private errorHandlingService: ErrorHandlingService
     ) {}
 
     ngOnInit(): void {
@@ -105,6 +107,7 @@ export class OnboardingComponent implements OnInit {
         }
 
         const { username, team } = this.onboardingForm.value;
+        const memberData = { ...this.onboardingForm.value, uid: userId };
 
         this.onboardingService
             .createTeam(userId, team)
@@ -114,23 +117,34 @@ export class OnboardingComponent implements OnInit {
                         userId,
                         teamId,
                         username,
-                        {},
+                        memberData,
                         this.selectedFile!
                     )
                     .subscribe({
-                        next: () => {
-                            this.alert = {
-                                type: 'success',
-                                message: 'Member added successfully!',
-                            };
-                            this.showAlert = true;
-                            this.resetFormState();
+                        next: (response) => {
+                            if (response.code === 0) {
+                                this.alert = {
+                                    type: 'success',
+                                    message:
+                                        'Member added and file uploaded successfully!',
+                                };
+                                this.showAlert = true;
+                                this.resetFormState();
+                            } else {
+                                const { type, message } =
+                                    this.errorHandlingService.handleOnboardingError(
+                                        response.code
+                                    );
+                                this.alert = { type, message };
+                                this.onboardingForm.enable();
+                                this.showAlert = true;
+                            }
                         },
                         error: () => {
                             this.alert = {
                                 type: 'error',
                                 message:
-                                    'Error adding member. Please try again.',
+                                    'Error during the process. Please try again.',
                             };
                             this.showAlert = true;
                             this.resetFormState();

@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FileCompareService } from 'app/core/compare/compare.service';
 import { ErrorHandlingService } from 'app/core/erorrs/error-handler';
+import { UserService } from 'app/core/user/user.service';
 import { FuseAlertComponent } from '../../../../@fuse/components/alert/alert.component';
 import { FuseLoadingBarComponent } from '../../../../@fuse/components/loading-bar/loading-bar.component';
 import { CompareResultComponent } from './compare-result/compare-result.component';
@@ -42,8 +43,6 @@ export class CompareComponent {
     imageUrl: string = '';
     selectedFile: File | null = null;
     filePreview: string | ArrayBuffer | null = null;
-    token =
-        'ya29.a0AcM612wNW3F2ulREuRvJGtd90GsLPRjmujr1YPE4NREypTG6TVAoHt0l9n2f_LpPGkXYczSIemz1kwahBl897WIIMyJYJeQiCRuBEiKNvu5fNU0IiuUw3Ck5RVosUQatslxMDf2x7UIk5m2wZoSThdTomV-5OmXtHacGCE0yaCgYKATISARISFQHGX2MiLnsV2KVND27s9_kd5k0GmA0175';
 
     uploadForm: FormGroup;
     alert = { type: '', message: '' };
@@ -52,11 +51,13 @@ export class CompareComponent {
         private formBuilder: FormBuilder,
         private fileCompareService: FileCompareService,
         private errorHandlingService: ErrorHandlingService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private userService: UserService
     ) {
+        const uid = this.userService.getUid();
         this.uploadForm = this.formBuilder.group({
             team: ['', Validators.required],
-            token: [this.token],
+            uid: [uid],
         });
     }
 
@@ -81,7 +82,7 @@ export class CompareComponent {
         if (this.uploadForm.valid && this.selectedFile) {
             const formData = {
                 team: this.uploadForm.value.team,
-                token: this.token,
+                uid: this.uploadForm.value.uid,
             };
 
             this.fileCompareService
