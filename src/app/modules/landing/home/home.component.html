@@ -1,30 +1,33 @@
 <div
     class="flex h-full w-full flex-col items-center justify-center bg-gray-50 p-6"
 >
-    <div class="w-full max-w-6xl rounded-lg bg-white p-6 shadow-lg">
-        <div class="mb-8 text-center">
-            <img
-                class="mx-auto mb-4 w-24"
-                src="images/logo/logo.svg"
-                alt="Logo image"
-            />
-            <h1 class="text-4xl font-bold text-gray-800">Phigil</h1>
-        </div>
-
-        <div class="mb-8 text-center">
-            <h2 class="text-3xl font-semibold text-gray-700">
-                Welcome to Phigil Detection System
+    <div class="w-full rounded-lg bg-white p-6 shadow-lg">
+        <section class=""></section>
+        <div class="mb-8 text-left">
+            <h2
+                class="transform-uppercase text-6xl font-semibold text-gray-700"
+            >
+                IN TODAYS DIGITAL LANDSCAPE,
+            </h2>
+            <h2
+                class="transform-uppercase text-6xl font-semibold text-gray-700"
+            >
+                SECURITY IS PARAMOUNT
             </h2>
             <p class="mt-4 text-lg text-gray-600">
-                In today’s digital landscape, security is paramount. Our
-                Imposter Detection System offers cutting-edge protection by
-                leveraging advanced computer vision technology to ensure that
-                only authorized users gain access.
+                The advanced two-level system that provides the highest level of
+                security and effectively prevents unauthorized access
             </p>
-            <p class="mt-2 text-lg text-gray-600">
-                Here’s how our system works and why it’s the ideal choice for
-                your security needs:
-            </p>
+            <div class="mt-8 text-center">
+                <a
+                    class="hover:bg-primary-dark inline-flex items-center rounded-lg bg-primary px-6 py-3 font-semibold text-white shadow-lg transition"
+                    mat-flat-button
+                    [color]="'primary'"
+                    [routerLink]="'/onboarding'"
+                >
+                    See it in action
+                </a>
+            </div>
         </div>
 
         <div class="mb-8 text-left">
@@ -73,21 +76,6 @@
                     maintains high accuracy and reliability.
                 </li>
             </ul>
-        </div>
-
-        <div class="mt-8 text-center">
-            <a
-                class="hover:bg-primary-dark inline-flex items-center rounded-lg bg-primary px-6 py-3 font-semibold text-white shadow-lg transition"
-                mat-flat-button
-                [color]="'primary'"
-                [routerLink]="'/onboarding'"
-            >
-                <span>Launch the App</span>
-                <mat-icon
-                    class="ml-2"
-                    [svgIcon]="'heroicons_mini:arrow-long-right'"
-                ></mat-icon>
-            </a>
         </div>
     </div>
 </div>

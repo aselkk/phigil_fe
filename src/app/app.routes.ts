@@ -3,6 +3,10 @@ import { initialDataResolver } from 'app/app.resolvers';
 import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
+import { teamDetailsResolver } from './core/teamDetails/team-details-resolver';
+import { teamsResolver } from './core/teams/teams-resolver.service';
+import { TeamDetailsComponent } from './modules/admin/team-details/team-details.component';
+import { TeamsComponent } from './modules/admin/teams/teams.component';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -125,18 +129,18 @@ export const appRoutes: Route[] = [
             },
             {
                 path: 'teams',
-                loadChildren: () =>
-                    import('app/modules/admin/teams/teams.routes'),
-            },
-            {
-                path: 'team',
-                loadChildren: () =>
-                    import('app/modules/admin/compare/compare.routes'),
-            },
-            {
-                path: 'member',
-                loadChildren: () =>
-                    import('app/modules/admin/compare/compare.routes'),
+                children: [
+                    {
+                        path: '',
+                        component: TeamsComponent,
+                        resolve: { teamsData: teamsResolver },
+                    },
+                    {
+                        path: ':teamId',
+                        component: TeamDetailsComponent,
+                        resolve: { teamDetailData: teamDetailsResolver },
+                    },
+                ],
             },
         ],
     },
