@@ -1,81 +1,177 @@
 <div
-    class="flex h-full w-full flex-col items-center justify-center bg-gray-50 p-6"
+    class="min-h-screen w-full p-4 md:p-10"
+    style="
+        background: linear-gradient(
+            to bottom,
+            rgba(21, 30, 45, 1),
+            rgba(69, 98, 147, 1)
+        );
+    "
 >
-    <div class="w-full rounded-lg bg-white p-6 shadow-lg">
-        <section class=""></section>
-        <div class="mb-8 text-left">
-            <h2
-                class="transform-uppercase text-6xl font-semibold text-gray-700"
-            >
-                IN TODAYS DIGITAL LANDSCAPE,
-            </h2>
-            <h2
-                class="transform-uppercase text-6xl font-semibold text-gray-700"
-            >
-                SECURITY IS PARAMOUNT
-            </h2>
-            <p class="mt-4 text-lg text-gray-600">
-                The advanced two-level system that provides the highest level of
-                security and effectively prevents unauthorized access
-            </p>
-            <div class="mt-8 text-center">
-                <a
-                    class="hover:bg-primary-dark inline-flex items-center rounded-lg bg-primary px-6 py-3 font-semibold text-white shadow-lg transition"
-                    mat-flat-button
-                    [color]="'primary'"
-                    [routerLink]="'/onboarding'"
-                >
-                    See it in action
-                </a>
+    <div class="mx-auto flex max-w-screen-xl items-center justify-between py-4">
+        <img
+            src="images/logo/logo1.svg"
+            alt="Phigil logo"
+            class="h-16 md:h-16"
+        />
+    </div>
+
+    <div class="mx-auto mb-16 max-w-screen-xl text-center text-white">
+        <h1 class="mb-4 text-5xl font-bold leading-tight md:text-7xl">
+            IN TODAY'S DIGITAL LANDSCAPE,<br />
+            SECURITY IS PARAMOUNT
+        </h1>
+        <p class="mb-8 text-xl md:text-2xl">
+            The advanced two-level system that provides the highest level of
+            security and effectively prevents unauthorized access.
+        </p>
+        <a
+            class="hover:bg-primary-dark inline-flex items-center rounded-lg bg-primary px-6 py-3 font-semibold text-white shadow-lg transition"
+            mat-flat-button
+            [color]="'primary'"
+            [routerLink]="'/onboarding'"
+        >
+            <mat-icon [svgIcon]="'heroicons_outline:chevron-right'"></mat-icon>
+
+            <span class="ml-4">SEE IT IN ACTION</span>
+        </a>
+    </div>
+
+    <div class="mx-auto mb-16 max-w-screen-xl text-white">
+        <h2 class="mb-6 text-3xl font-semibold">
+            We Provide Robust Security Measures
+        </h2>
+        <div class="grid gap-8 md:grid-cols-2">
+            <div class="flex items-start rounded-lg bg-gray-800 p-6 shadow-md">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:shield-check'"
+                    class="mr-4 text-2xl"
+                ></mat-icon>
+                <div>
+                    <h3 class="mb-4 text-xl font-semibold">
+                        Advanced Computer Vision Algorithms
+                    </h3>
+                    <p class="text-base">
+                        Our system uses the latest computer vision technology to
+                        analyze and interpret visual data, recognizing facial
+                        features and assessing biometric data.
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-start rounded-lg bg-gray-800 p-6 shadow-md">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:hand-thumb-up'"
+                    class="mr-4 text-2xl"
+                ></mat-icon>
+                <div>
+                    <h3 class="mb-4 text-xl font-semibold">Adaptability</h3>
+                    <p class="text-base">
+                        Our system is designed to adapt to various environments
+                        and conditions, ensuring high accuracy and reliability
+                        even in challenging scenarios.
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-start rounded-lg bg-gray-800 p-6 shadow-md">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:clock'"
+                    class="mr-4 text-2xl"
+                ></mat-icon>
+                <div>
+                    <h3 class="mb-4 text-xl font-semibold">
+                        Real-Time Authentication
+                    </h3>
+                    <p class="text-base">
+                        Ensures immediate and accurate authentication,
+                        minimizing the risk of unauthorized access.
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-start rounded-lg bg-gray-800 p-6 shadow-md">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:lock-closed'"
+                    class="mr-4 text-2xl"
+                ></mat-icon>
+                <div>
+                    <h3 class="mb-4 text-xl font-semibold">
+                        Robust Security Measures
+                    </h3>
+                    <p class="text-base">
+                        Integrates various layers of computer vision to assess
+                        expressions, gestures, and other unique identifiers,
+                        enhancing security against imposters.
+                    </p>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="mb-8 text-left">
-            <h3 class="mb-4 text-2xl font-semibold text-gray-700">
-                What is Imposter Detection?
-            </h3>
-            <p class="mb-6 text-base text-gray-600">
-                Imposter Detection is a sophisticated security solution designed
-                to prevent unauthorized access by identifying and blocking
-                individuals who do not meet the predefined criteria for
-                legitimate users. Our system utilizes state-of-the-art computer
-                vision techniques to verify user identity with unparalleled
-                accuracy.
-            </p>
-
-            <h3 class="mb-4 text-2xl font-semibold text-gray-700">
-                How It Works
-            </h3>
-            <ul class="list-inside list-disc space-y-2 text-base text-gray-600">
-                <li>
-                    <strong>Advanced Computer Vision Algorithms:</strong> Our
-                    system employs the latest computer vision technology to
-                    analyze and interpret visual data. This includes recognizing
-                    facial features, detecting anomalies, and assessing
-                    biometric data in real-time.
-                </li>
-                <li>
-                    <strong>Real-Time Authentication:</strong> The moment a user
-                    attempts to access the system, our algorithms instantly scan
-                    and verify their identity. This process ensures immediate
-                    and accurate authentication, minimizing the risk of
-                    unauthorized access.
-                </li>
-                <li>
-                    <strong>Robust Security Measures:</strong> By integrating
-                    various layers of computer vision, our system not only
-                    identifies facial features but also assesses expressions,
-                    gestures, and other unique identifiers. This multi-faceted
-                    approach makes it significantly harder for imposters to
-                    bypass security.
-                </li>
-                <li>
-                    <strong>Adaptability:</strong> Our system is designed to
-                    adapt to various environments and conditions. Whether in low
-                    light, varying angles, or diverse user backgrounds, it
-                    maintains high accuracy and reliability.
-                </li>
-            </ul>
+    <div class="mx-auto mb-16 max-w-screen-xl text-white">
+        <h2 class="mb-6 text-center text-3xl font-semibold">
+            Advantages of the System
+        </h2>
+        <div class="grid gap-8 md:grid-cols-3">
+            <div
+                class="flex flex-col items-center rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-center shadow-lg"
+            >
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:shield-check'"
+                    class="mb-4 text-4xl text-white"
+                ></mat-icon>
+                <h3 class="mb-2 text-xl font-semibold">Enhanced Security</h3>
+                <p class="text-base">
+                    Our system provides robust security measures to protect your
+                    data and prevent unauthorized access, using state-of-the-art
+                    technology.
+                </p>
+            </div>
+            <div
+                class="flex flex-col items-center rounded-lg bg-gradient-to-r from-green-500 to-blue-600 p-6 text-center shadow-lg"
+            >
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:sparkles'"
+                    class="mb-4 text-4xl text-white"
+                ></mat-icon>
+                <h3 class="mb-2 text-xl font-semibold">
+                    User-Friendly Experience
+                </h3>
+                <p class="text-base">
+                    Designed with usability in mind, our system offers an
+                    intuitive interface that enhances user satisfaction and
+                    accessibility.
+                </p>
+            </div>
+            <div
+                class="flex flex-col items-center rounded-lg bg-gradient-to-r from-red-500 to-orange-500 p-6 text-center shadow-lg"
+            >
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:check-circle'"
+                    class="mb-4 text-4xl text-white"
+                ></mat-icon>
+                <h3 class="mb-2 text-xl font-semibold">
+                    Accurate Identification
+                </h3>
+                <p class="text-base">
+                    Leveraging advanced algorithms, our system ensures precise
+                    identification, minimizing false positives and enhancing
+                    security.
+                </p>
+            </div>
         </div>
     </div>
+
+    <footer class="mx-auto mt-16 max-w-screen-xl text-center text-white">
+        <h2 class="mb-6 text-3xl font-semibold">Contact Us</h2>
+        <p class="mb-2 text-base">
+            Contact us today to learn more about how our technology can work for
+            you.
+        </p>
+        <div class="mb-8 flex justify-center space-x-4">
+            <a href="#" class="text-base text-gray-400">Instagram</a>
+            <a href="#" class="text-base text-gray-400">Facebook</a>
+        </div>
+        <p class="text-sm text-gray-500">
+            &copy; 2024 Namadgi Tech LLC. All rights reserved.
+        </p>
+    </footer>
 </div>

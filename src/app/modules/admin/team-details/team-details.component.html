@@ -1,39 +1,42 @@
 <div class="flex min-w-0 flex-auto flex-col">
     <fuse-loading-bar setAutoMode="true"></fuse-loading-bar>
-    <!-- Main -->
+
     <div class="flex-auto p-6 sm:p-10">
-        <!-- CONTENT GOES HERE -->
         <div
             class="h-full rounded-2xl border-2 border-dashed border-gray-300 p-8"
         >
             <div class="mb-8 text-center">
                 <h2 class="text-2xl font-semibold text-gray-800">Members</h2>
             </div>
+
             <div
-                class="grid w-full min-w-0 grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+                class="grid w-full min-w-0 grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
             >
-                <div *ngFor="let member of members$ | async">
-                    <div
-                        class="bg-card flex flex-auto flex-col items-center overflow-hidden rounded-2xl shadow"
+                <ng-container *ngFor="let member of members$ | async">
+                    <fuse-card
+                        class="flex w-full max-w-xs flex-col items-center rounded-2xl p-6"
+                        style="
+                            background: white;
+                            box-shadow: 0 4px 10px rgba(21, 30, 45, 0.3);
+                        "
                     >
-                        <div class="flex flex-auto flex-col p-8 text-center">
-                            <div class="mx-auto h-32 w-32 overflow-hidden">
-                                <img
-                                    class="h-full w-full object-cover"
-                                    [src]="member.imageUrl"
-                                />
-                            </div>
-                            <div class="mt-4 flex w-full flex-col items-end">
-                                <div class="w-full text-left font-bold">
-                                    Name:
-                                </div>
-                                <div class="w-full text-left font-medium">
-                                    {{ member.name }}
-                                </div>
-                            </div>
+                        <div class="relative mb-6 h-32 w-32 overflow-hidden">
+                            <img
+                                class="h-full w-full object-cover"
+                                [src]="member.imageUrl"
+                                alt="Member Image"
+                            />
                         </div>
-                    </div>
-                </div>
+
+                        <div
+                            class="text-center text-xl font-semibold leading-tight text-gray-800"
+                        >
+                            {{ member.name | uppercase }}
+                        </div>
+
+                        <hr class="mb-4 mt-4 w-full border-t" />
+                    </fuse-card>
+                </ng-container>
             </div>
         </div>
     </div>

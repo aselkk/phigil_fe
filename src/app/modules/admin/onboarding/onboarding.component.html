@@ -5,125 +5,146 @@
         <!-- CONTENT GOES HERE -->
         <div class="h-full rounded-2xl border-2 border-dashed border-gray-300">
             <div
-                class="flex h-full min-w-0 flex-col items-center justify-center p-6"
+                class="flex h-full flex-col items-center justify-center md:flex-row"
             >
-                <div class="mb-8 text-center">
-                    <h2 class="text-2xl font-semibold text-gray-800">
-                        Onboarding
-                    </h2>
-                    <p class="mt-2 text-gray-600">
-                        Please follow the instructions below to upload your
-                        photo and complete the onboarding process.
-                    </p>
-                </div>
-                <div class="prose prose-sm w-full max-w-md">
-                    <div
-                        class="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4"
-                    >
-                        <h3 class="text-lg font-semibold text-blue-700">
-                            Photo Upload Instructions:
-                        </h3>
-                        <ul class="list-disc pl-5 text-blue-600">
-                            <li>
-                                Ensure the face is clearly visible and well-lit.
-                            </li>
-                            <li>Avoid uploading images with multiple faces.</li>
-                            <li>
-                                Make sure the face is centered in the frame.
-                            </li>
-                        </ul>
-                    </div>
-
-                    <form
-                        #onboardingNgForm="ngForm"
-                        [formGroup]="onboardingForm"
-                        class="bg-card mx-auto flex w-full flex-col overflow-hidden rounded-2xl p-8 pb-4 shadow sm:max-w-sm"
-                    >
-                        <div class="flex flex-col space-y-4">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Name</mat-label>
-                                <input
-                                    matInput
-                                    [formControlName]="'username'"
-                                />
-                                <mat-error
-                                    *ngIf="
-                                        onboardingForm
-                                            .get('username')
-                                            .hasError('required')
-                                    "
-                                >
-                                    Name is required
-                                </mat-error>
-                            </mat-form-field>
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Team</mat-label>
-                                <input matInput [formControlName]="'team'" />
-                                <mat-error
-                                    *ngIf="
-                                        onboardingForm
-                                            .get('team')
-                                            .hasError('required')
-                                    "
-                                >
-                                    Team name is required
-                                </mat-error>
-                            </mat-form-field>
+                <div class="flex h-full w-full items-center justify-center">
+                    <div class="mx-auto w-full max-w-sm p-4 md:w-3/5">
+                        <div class="mb-8 text-center">
+                            <h2 class="text-2xl font-semibold text-gray-800">
+                                Team Member Onboarding
+                            </h2>
+                            <p class="mt-2 text-gray-800">
+                                Please follow the instructions below to upload
+                                your photo and complete the onboarding process.
+                            </p>
                         </div>
-
-                        <input
-                            type="file"
-                            id="files"
-                            (change)="onFileSelected($event)"
-                            style="display: none"
-                        />
-                        <button
-                            type="button"
-                            mat-flat-button
-                            [color]="'accent'"
-                            (click)="triggerFileInput()"
-                            class="mb-3 flex items-center"
+                        <div
+                            class="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4"
                         >
-                            <mat-icon
-                                [svgIcon]="'heroicons_outline:plus'"
-                            ></mat-icon>
-                            <span class="ml-2 mr-1">
-                                {{
-                                    selectedFile
-                                        ? 'Change photo'
-                                        : 'Upload photo'
-                                }}
-                            </span>
-                        </button>
-                        <img
-                            *ngIf="filePreview"
-                            [src]="filePreview"
-                            alt="Selected Image"
-                            class="mt-4 w-24 rounded-md border"
-                        />
-
-                        <button
-                            class="fuse-mat-button-large mt-4 w-full"
-                            mat-flat-button
-                            [color]="'primary'"
-                            [disabled]="!onboardingForm.valid || !selectedFile"
-                            (click)="onSubmit()"
-                        >
-                            Submit
-                        </button>
-                    </form>
+                            <h3 class="text-lg font-semibold text-blue-700">
+                                Photo Upload Instructions:
+                            </h3>
+                            <ul class="list-disc pl-5 text-blue-600">
+                                <li>
+                                    Ensure the face is clearly visible and
+                                    well-lit.
+                                </li>
+                                <li>
+                                    Avoid uploading images with multiple faces.
+                                </li>
+                                <li>
+                                    Make sure the face is centered in the frame.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+                <div class="h-full w-full">
+                    <div
+                        class="mx-auto flex h-full w-full items-center justify-center rounded-2xl border-2"
+                        style="
+                            background: linear-gradient(
+                                to bottom,
+                                rgba(21, 30, 45, 1),
+                                rgba(69, 98, 147, 1)
+                            );
+                        "
+                    >
+                        <form
+                            #onboardingNgForm="ngForm"
+                            [formGroup]="onboardingForm"
+                            class="bg-card mx-auto flex w-full flex-col overflow-hidden rounded-2xl p-8 pb-4 shadow sm:max-w-sm"
+                        >
+                            <div class="flex flex-col space-y-4">
+                                <mat-form-field class="flex-auto">
+                                    <mat-label>Name</mat-label>
+                                    <input
+                                        matInput
+                                        [formControlName]="'username'"
+                                    />
+                                    <mat-error
+                                        *ngIf="
+                                            onboardingForm
+                                                .get('username')
+                                                .hasError('required')
+                                        "
+                                    >
+                                        Name is required
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="flex-auto">
+                                    <mat-label>Team</mat-label>
+                                    <input
+                                        matInput
+                                        [formControlName]="'team'"
+                                    />
+                                    <mat-error
+                                        *ngIf="
+                                            onboardingForm
+                                                .get('team')
+                                                .hasError('required')
+                                        "
+                                    >
+                                        Team name is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
 
-                <fuse-alert
-                    *ngIf="showAlert"
-                    class="m-8"
-                    [appearance]="'outline'"
-                    [showIcon]="false"
-                    [type]="alert.type"
-                    [@shake]="alert.type === 'error'"
-                >
-                    {{ alert.message }}
-                </fuse-alert>
+                            <input
+                                type="file"
+                                id="files"
+                                (change)="onFileSelected($event)"
+                                style="display: none"
+                            />
+                            <button
+                                type="button"
+                                mat-flat-button
+                                [color]="'accent'"
+                                (click)="triggerFileInput()"
+                                class="mb-3 flex items-center"
+                            >
+                                <mat-icon
+                                    [svgIcon]="'heroicons_outline:plus'"
+                                ></mat-icon>
+                                <span class="ml-2 mr-1">
+                                    {{
+                                        selectedFile
+                                            ? 'Change photo'
+                                            : 'Upload photo'
+                                    }}
+                                </span>
+                            </button>
+                            <img
+                                *ngIf="filePreview"
+                                [src]="filePreview"
+                                alt="Selected Image"
+                                class="mt-4 w-24 rounded-md border"
+                            />
+
+                            <button
+                                class="fuse-mat-button-large mt-4 w-full"
+                                mat-flat-button
+                                [color]="'primary'"
+                                [disabled]="
+                                    !onboardingForm.valid || !selectedFile
+                                "
+                                (click)="onSubmit()"
+                            >
+                                Submit
+                            </button>
+                        </form>
+                        <fuse-alert
+                            *ngIf="showAlert"
+                            class="m-8"
+                            [appearance]="'outline'"
+                            [showIcon]="false"
+                            [type]="alert.type"
+                            [@shake]="alert.type === 'error'"
+                        >
+                            {{ alert.message }}
+                        </fuse-alert>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

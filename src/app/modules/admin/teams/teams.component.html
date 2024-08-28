@@ -1,52 +1,52 @@
 <div class="flex min-w-0 flex-auto flex-col">
     <fuse-loading-bar setAutoMode="true"></fuse-loading-bar>
-    <!-- Main -->
+
     <div class="flex-auto p-6 sm:p-10">
-        <!-- CONTENT GOES HERE -->
         <div class="h-full rounded-2xl border-2 border-dashed border-gray-300">
-            <div class="mb-8 mt-6 text-center">
+            <div class="mb-3 mt-6 text-center">
                 <h2 class="text-2xl font-semibold text-gray-800">Teams</h2>
             </div>
+
             <div class="flex flex-auto flex-col">
                 <div class="space-y-8 p-6 md:p-8">
-                    <div *ngIf="teams$ | async as teams">
-                        <div
-                            *ngFor="let team of teams"
-                            class="-m-2 mt-2 flex flex-wrap"
-                        >
-                            <div
-                                class="bg-card relative m-2 h-40 w-40 rounded-2xl p-4 shadow"
-                            >
-                                <a
-                                    class="absolute inset-0 z-10 flex cursor-pointer flex-col p-4"
-                                    [routerLink]="['/teams', team.id]"
+                    <ng-container *ngIf="teams$ | async as teams">
+                        <div class="-m-2 mt-2 flex flex-wrap">
+                            <ng-container *ngFor="let team of teams">
+                                <div
+                                    class="bg-card relative m-2 h-40 w-40 rounded-2xl p-4 shadow"
                                 >
-                                    <div class="aspect-[9/6]">
-                                        <div
-                                            class="flex h-full items-center justify-center"
-                                        >
-                                            <mat-icon
-                                                class="text-hint opacity-50 icon-size-14"
-                                                [svgIcon]="
-                                                    'heroicons_solid:folder'
-                                                "
-                                            ></mat-icon>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex flex-auto flex-col justify-center text-center text-sm font-medium"
+                                    <a
+                                        class="absolute inset-0 z-10 flex cursor-pointer flex-col p-4"
+                                        [routerLink]="['/teams', team.id]"
                                     >
-                                        <div
-                                            class="truncate"
-                                            [matTooltip]="team.name"
-                                        >
-                                            {{ team.name }}
+                                        <div class="aspect-[9/6]">
+                                            <div
+                                                class="flex h-full items-center justify-center"
+                                            >
+                                                <mat-icon
+                                                    class="text-hint opacity-50 icon-size-14"
+                                                    [svgIcon]="
+                                                        'heroicons_solid:folder'
+                                                    "
+                                                >
+                                                </mat-icon>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </div>
+                                        <div
+                                            class="flex flex-auto flex-col justify-center text-center text-sm font-medium"
+                                        >
+                                            <div
+                                                class="truncate"
+                                                [matTooltip]="team.name"
+                                            >
+                                                {{ team.name }}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </ng-container>
                         </div>
-                    </div>
+                    </ng-container>
                 </div>
             </div>
         </div>
