@@ -1,3 +1,4 @@
+<!-- team-details.component.html -->
 <div class="flex min-w-0 flex-auto flex-col">
     <fuse-loading-bar setAutoMode="true"></fuse-loading-bar>
 
@@ -10,9 +11,9 @@
             </div>
 
             <div
-                class="grid w-full min-w-0 grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
+                class="grid w-full min-w-0 grid-cols-1 gap-6 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-6"
             >
-                <ng-container *ngFor="let member of members$ | async">
+                <ng-container *ngFor="let username of usernames()">
                     <fuse-card
                         class="flex w-full max-w-xs flex-col items-center rounded-2xl p-6"
                         style="
@@ -23,7 +24,7 @@
                         <div class="relative mb-6 h-32 w-32 overflow-hidden">
                             <img
                                 class="h-full w-full object-cover"
-                                [src]="member.imageUrl"
+                                src="https://via.placeholder.com/128"
                                 alt="Member Image"
                             />
                         </div>
@@ -31,7 +32,7 @@
                         <div
                             class="text-center text-xl font-semibold leading-tight text-gray-800"
                         >
-                            {{ member.name | uppercase }}
+                            {{ username | uppercase }}
                         </div>
 
                         <hr class="mb-4 mt-4 w-full border-t" />

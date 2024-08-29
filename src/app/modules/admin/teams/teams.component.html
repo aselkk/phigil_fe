@@ -9,15 +9,15 @@
 
             <div class="flex flex-auto flex-col">
                 <div class="space-y-8 p-6 md:p-8">
-                    <ng-container *ngIf="teams$ | async as teams">
+                    <ng-container *ngIf="teams">
                         <div class="-m-2 mt-2 flex flex-wrap">
-                            <ng-container *ngFor="let team of teams">
+                            <ng-container *ngFor="let team of teams()">
                                 <div
                                     class="bg-card relative m-2 h-40 w-40 rounded-2xl p-4 shadow"
                                 >
                                     <a
                                         class="absolute inset-0 z-10 flex cursor-pointer flex-col p-4"
-                                        [routerLink]="['/teams', team.id]"
+                                        [routerLink]="['/teams', team]"
                                     >
                                         <div class="aspect-[9/6]">
                                             <div
@@ -37,9 +37,9 @@
                                         >
                                             <div
                                                 class="truncate"
-                                                [matTooltip]="team.name"
+                                                [matTooltip]="team"
                                             >
-                                                {{ team.name }}
+                                                {{ team }}
                                             </div>
                                         </div>
                                     </a>

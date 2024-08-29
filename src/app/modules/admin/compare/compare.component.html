@@ -104,16 +104,16 @@
                                     Submit
                                 </button>
                             </div>
+                            <fuse-alert
+                                *ngIf="showAlert"
+                                class="m-8"
+                                [appearance]="'outline'"
+                                [showIcon]="false"
+                                [type]="alert.type"
+                            >
+                                {{ alert.message }}
+                            </fuse-alert>
                         </form>
-                        <fuse-alert
-                            *ngIf="showAlert"
-                            class="m-8"
-                            [appearance]="'outline'"
-                            [showIcon]="false"
-                            [type]="alert.type"
-                        >
-                            {{ alert.message }}
-                        </fuse-alert>
                     </div>
                 </div>
             </div>

@@ -1,64 +1,44 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-    Firestore,
-    collection,
-    collectionData,
-    doc,
-    docData,
-} from '@angular/fire/firestore';
 import { UserService } from 'app/core/user/user.service';
-import { Team } from 'app/modules/admin/team-details/team.types';
 import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class TeamsService {
+    private apiUrl = 'https://phigil-team-management-bglcjkpr6a-uc.a.run.app';
+
     constructor(
-        private firestore: Firestore,
+        private http: HttpClient,
         private userService: UserService
     ) {}
 
-    getTeams(): Observable<Team[]> {
-        const userId = this.userService.getUid();
-        if (!userId) {
+    private getHeaders(): HttpHeaders {
+        const uid = this.userService.getUid();
+        if (!uid) {
             throw new Error('User not authenticated');
         }
 
-        const teamsCollection = collection(
-            this.firestore,
-            `users/${userId}/teams`
-        );
-        return collectionData(teamsCollection, { idField: 'id' }) as Observable<
-            Team[]
-        >;
+        return new HttpHeaders({
+            Identity: uid,
+        });
     }
 
-    getTeamById(teamId: string): Observable<Team> {
-        const userId = this.userService.getUid();
-        if (!userId) {
-            throw new Error('User not authenticated');
-        }
-
-        const teamDocRef = doc(
-            this.firestore,
-            `users/${userId}/teams/${teamId}`
-        );
-        return docData(teamDocRef, { idField: 'id' }) as Observable<Team>;
+    getTeams(): Observable<any> {
+        const headers = this.getHeaders();
+        return this.http.get(`${this.apiUrl}/teams`, { headers });
     }
 
-    getTeamMembers(teamId: string): Observable<any[]> {
-        const userId = this.userService.getUid();
-        if (!userId) {
-            throw new Error('User not authenticated');
-        }
+    getTeamMembers(teamId: string): Observable<any> {
+        const headers = this.getHeaders();
+        return this.http.get(`${this.apiUrl}/teams/${teamId}`, { headers });
+    }
 
-        const membersCollection = collection(
-            this.firestore,
-            `users/${userId}/teams/${teamId}/members`
-        );
-        return collectionData(membersCollection, {
-            idField: 'id',
-        }) as Observable<any[]>;
+    deleteTeamMember(teamId: string, memberId: string): Observable<any> {
+        const headers = this.getHeaders();
+        return this.http.delete(`${this.apiUrl}/teams/${teamId}/${memberId}`, {
+            headers,
+        });
     }
 }

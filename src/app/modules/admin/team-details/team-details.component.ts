@@ -1,10 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TeamsService } from 'app/core/teams/teams.service';
-import { Team } from 'app/modules/admin/team-details/team.types';
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { TeamsStoreService } from 'app/core/store/team-store.service';
 import { FuseLoadingBarComponent } from '../../../../@fuse/components/loading-bar/loading-bar.component';
 
 @Component({
@@ -14,25 +11,18 @@ import { FuseLoadingBarComponent } from '../../../../@fuse/components/loading-ba
     imports: [CommonModule, FuseLoadingBarComponent],
 })
 export class TeamDetailsComponent implements OnInit {
-    team$: Observable<Team>;
-    members$: Observable<any[]>;
+    teamId: string;
+    usernames: Signal<string[]>;
 
     constructor(
         private route: ActivatedRoute,
-        private teamsService: TeamsService
+        private teamsStoreService: TeamsStoreService
     ) {}
 
     ngOnInit(): void {
-        this.team$ = this.route.paramMap.pipe(
-            switchMap((params) =>
-                this.teamsService.getTeamById(params.get('teamId')!)
-            )
-        );
-
-        this.members$ = this.route.paramMap.pipe(
-            switchMap((params) =>
-                this.teamsService.getTeamMembers(params.get('teamId')!)
-            )
-        );
+        this.route.paramMap.subscribe((params) => {
+            this.teamId = params.get('teamId')!;
+            this.usernames = this.teamsStoreService.getTeamMembers(this.teamId);
+        });
     }
 }

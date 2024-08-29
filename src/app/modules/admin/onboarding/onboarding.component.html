@@ -57,22 +57,6 @@
                         >
                             <div class="flex flex-col space-y-4">
                                 <mat-form-field class="flex-auto">
-                                    <mat-label>Name</mat-label>
-                                    <input
-                                        matInput
-                                        [formControlName]="'username'"
-                                    />
-                                    <mat-error
-                                        *ngIf="
-                                            onboardingForm
-                                                .get('username')
-                                                .hasError('required')
-                                        "
-                                    >
-                                        Name is required
-                                    </mat-error>
-                                </mat-form-field>
-                                <mat-form-field class="flex-auto">
                                     <mat-label>Team</mat-label>
                                     <input
                                         matInput
@@ -86,6 +70,22 @@
                                         "
                                     >
                                         Team name is required
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="flex-auto">
+                                    <mat-label>Name</mat-label>
+                                    <input
+                                        matInput
+                                        [formControlName]="'username'"
+                                    />
+                                    <mat-error
+                                        *ngIf="
+                                            onboardingForm
+                                                .get('username')
+                                                .hasError('required')
+                                        "
+                                    >
+                                        Name is required
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -132,17 +132,17 @@
                             >
                                 Submit
                             </button>
+                            <fuse-alert
+                                *ngIf="showAlert"
+                                class="m-8"
+                                [appearance]="'outline'"
+                                [showIcon]="false"
+                                [type]="alert.type"
+                                [@shake]="alert.type === 'error'"
+                            >
+                                {{ alert.message }}
+                            </fuse-alert>
                         </form>
-                        <fuse-alert
-                            *ngIf="showAlert"
-                            class="m-8"
-                            [appearance]="'outline'"
-                            [showIcon]="false"
-                            [type]="alert.type"
-                            [@shake]="alert.type === 'error'"
-                        >
-                            {{ alert.message }}
-                        </fuse-alert>
                     </div>
                 </div>
             </div>

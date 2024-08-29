@@ -17,6 +17,7 @@ import { FuseAlertType } from '@fuse/components/alert';
 import { FuseLoadingBarComponent } from '@fuse/components/loading-bar';
 import { ErrorHandlingService } from 'app/core/erorrs/error-handler';
 import { OnboardingService } from 'app/core/onboarding/onboarding.service';
+import { TeamsStoreService } from 'app/core/store/team-store.service';
 import { UserService } from 'app/core/user/user.service';
 import { FuseAlertComponent } from '../../../../@fuse/components/alert/alert.component';
 
@@ -55,7 +56,8 @@ export class OnboardingComponent implements OnInit {
         private formBuilder: FormBuilder,
         private onboardingService: OnboardingService,
         private userService: UserService,
-        private errorHandlingService: ErrorHandlingService
+        private errorHandlingService: ErrorHandlingService,
+        private teamsStoreService: TeamsStoreService
     ) {}
 
     ngOnInit(): void {
@@ -123,6 +125,9 @@ export class OnboardingComponent implements OnInit {
                     .subscribe({
                         next: (response) => {
                             if (response.code === 0) {
+                                this.teamsStoreService.clearCache();
+                                this.teamsStoreService.getTeams();
+
                                 this.alert = {
                                     type: 'success',
                                     message:

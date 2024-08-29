@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
-import { TeamsService } from 'app/core/teams/teams.service';
-import { Observable } from 'rxjs';
+import { TeamsStoreService } from 'app/core/store/team-store.service';
 import { FuseLoadingBarComponent } from '../../../../@fuse/components/loading-bar/loading-bar.component';
 
 @Component({
@@ -20,10 +19,11 @@ import { FuseLoadingBarComponent } from '../../../../@fuse/components/loading-ba
     ],
 })
 export class TeamsComponent implements OnInit {
-    teams$: Observable<any[]>;
-    constructor(private teamsService: TeamsService) {}
+    teams: Signal<string[]>;
+
+    constructor(private teamsStoreService: TeamsStoreService) {}
 
     ngOnInit(): void {
-        this.teams$ = this.teamsService.getTeams();
+        this.teams = this.teamsStoreService.getTeams();
     }
 }
